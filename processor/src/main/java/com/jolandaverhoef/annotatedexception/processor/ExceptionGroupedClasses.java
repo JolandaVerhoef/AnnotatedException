@@ -3,7 +3,6 @@ package com.jolandaverhoef.annotatedexception.processor;
 
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
@@ -64,7 +63,7 @@ class ExceptionGroupedClasses {
         MethodSpec.Builder method = MethodSpec.methodBuilder("create")
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(Class.class, "origin")
-                .returns(TypeName.get(superClassName.asType()));
+                .returns(Exception.class);
 
         // check if id is null
         method.beginControlFlow("if (origin == null)")
@@ -74,7 +73,7 @@ class ExceptionGroupedClasses {
         // Generate items map
         for (ExceptionAnnotatedClass item : itemsMap.values()) {
             method.beginControlFlow("if ($S.equals(origin.getCanonicalName()))", item.getTypeElement().getQualifiedName())
-                    .addStatement("return new $L()", item.getTypeElement().getQualifiedName().toString())
+                    .addStatement("return new $L()", item.getResultCanonicalClassName())
                     .endControlFlow();
         }
 

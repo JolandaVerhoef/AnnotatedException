@@ -34,7 +34,7 @@ public class AnnotatedExceptionProcessor extends AbstractProcessor {
     private Elements elementUtils;
     private Filer filer;
     private Messager messager;
-    private Map<String, ExceptionGroupedClasses> exceptionClasses = new LinkedHashMap<>();
+    private Map<String, ExceptionGroupedClasses> factoryClasses = new LinkedHashMap<>();
 
     @Override
     public synchronized void init(ProcessingEnvironment env) {
@@ -66,22 +66,23 @@ public class AnnotatedExceptionProcessor extends AbstractProcessor {
 
                 // Everything is fine, so try to add
                 String category = annotatedClass.getCategory();
-                if(category == null) category = DEFAULT_CATEGORY_NAME;
-                ExceptionGroupedClasses exceptionClass =
-                        exceptionClasses.get(category);
-                if (exceptionClass == null) {
-                    exceptionClass = new ExceptionGroupedClasses(category);
-                    exceptionClasses.put(category, exceptionClass);
+                ExceptionGroupedClasses factoryClass = factoryClasses.get(category);
+                if (factoryClass == null) {
+                    factoryClass = new ExceptionGroupedClasses(category);
+                    factoryClasses.put(category, factoryClass);
                 }
 
-                exceptionClass.add(annotatedClass);
+                factoryClass.add(annotatedClass);
+
+                // Generate an exception method for the annotated class
+                annotatedClass.generateCode(elementUtils, filer);
             }
 
             // Generate code
-            for (ExceptionGroupedClasses exceptionClass : exceptionClasses.values()) {
+            for (ExceptionGroupedClasses exceptionClass : factoryClasses.values()) {
                 exceptionClass.generateCode(elementUtils, filer);
             }
-            exceptionClasses.clear();
+            factoryClasses.clear();
         } catch (ProcessingException e) {
             error(e.getElement(), e.getMessage());
         } catch (IOException e) {

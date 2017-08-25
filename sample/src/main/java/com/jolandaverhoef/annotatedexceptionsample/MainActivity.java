@@ -9,7 +9,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Dummy dummy = new ExceptionFactory().create(Dummy.class);
-        assert (dummy != null);
+        Exception e = new ExceptionFactory().create(Dummy.class);
+        assert (e != null);
     }
 }
