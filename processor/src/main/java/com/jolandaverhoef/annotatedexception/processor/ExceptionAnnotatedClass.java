@@ -7,6 +7,7 @@ import com.squareup.javapoet.TypeSpec;
 import java.io.IOException;
 
 import javax.annotation.processing.Filer;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
@@ -47,7 +48,10 @@ class ExceptionAnnotatedClass {
         PackageElement pkg = elementUtils.getPackageOf(annotatedClassElement);
         String packageName = pkg.isUnnamed() ? null : pkg.getQualifiedName().toString();
 
-        TypeSpec typeSpec = TypeSpec.classBuilder(className).superclass(java.lang.Exception.class).build();
+        TypeSpec typeSpec = TypeSpec.classBuilder(className)
+                .addModifiers(Modifier.PUBLIC)
+                .superclass(java.lang.Exception.class)
+                .build();
 
         // Write file
         JavaFile.builder(packageName, typeSpec).build().writeTo(filer);

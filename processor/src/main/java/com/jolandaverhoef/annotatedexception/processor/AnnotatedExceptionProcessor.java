@@ -28,9 +28,6 @@ import javax.tools.Diagnostic;
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 @SupportedAnnotationTypes("com.jolandaverhoef.annotatedexception.annotation.Exception")
 public class AnnotatedExceptionProcessor extends AbstractProcessor {
-
-    private final static String DEFAULT_CATEGORY_NAME = "DEFAULT";
-
     private Elements elementUtils;
     private Filer filer;
     private Messager messager;
