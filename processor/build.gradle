@@ -1,5 +1,29 @@
 apply plugin: 'java-library'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'AnnotatedException'
+    orgName = 'jolandaverhoef'
+
+    publishedGroupId = 'com.jolandaverhoef.annotatedexception'
+    artifact = 'processor'
+    libraryVersion = "1.0"
+
+    libraryName = 'annotatedexception'
+    libraryDescription = 'Generate custom exception classes'
+
+    siteUrl = 'https://github.com/JolandaVerhoef/AnnotatedException'
+    gitUrl = 'https://github.com/JolandaVerhoef/AnnotatedException.git'
+
+    developerId = 'jolandaverhoef'
+    developerName = 'Jolanda Verhoef'
+    developerEmail = 'jolandaverhoef@gmail.com'
+
+    licenseName = 'Apache-2.0'
+    licenseUrl = 'https://github.com/JolandaVerhoef/AnnotatedException/blob/master/LICENSE'
+    allLicenses = ["Apache-2.0"]
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':annotation')
@@ -9,5 +33,8 @@ dependencies {
     testImplementation 'com.google.testing.compile:compile-testing:0.8'
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+apply from: rootProject.file('gradle/install-v1.gradle')
+apply from: rootProject.file('gradle/bintray-java-v1.gradle')
